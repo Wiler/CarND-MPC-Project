@@ -11,6 +11,9 @@ set(CMAKE_CXX_FLAGS "${CXX_FLAGS}")
 
 set(sources src/MPC.cpp src/main.cpp)
 
+find_package(BLAS REQUIRED)
+find_package(LAPACK REQUIRED)
+
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 include_directories(src/Eigen-3.3)
@@ -25,5 +28,5 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 add_executable(mpc ${sources})
 
-target_link_libraries(mpc ipopt z ssl uv uWS)
+target_link_libraries(mpc ipopt z ssl uv uWS ${CMAKE_DL_LIBS} python2.7 blas lapack)
 

@@ -92,6 +92,27 @@ int main() {
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
 
+          Eigen::VectorXd car_x(ptsx.size());
+          Eigen::VectorXd car_y(ptsy.size());
+          for(int i = 0; i < ptsx.size(); i++) {
+            const double dx = ptsx[i] - px;
+            const double dy = ptsy[i] - py;
+            car_x[i] = dx * cos(-psi) - dy * sin(-psi);
+            car_y[i] = dy * cos(-psi) + dx * sin(-psi);
+          }
+
+          auto coeffs = polyfit(car_x, car_y, 3);
+
+          // The cross track error is calculated by evaluating at polynomial at x, f(x)
+          // and subtracting y.
+          double cte = polyeval(coeffs, 0);
+          // Due to the sign starting at 0, the orientation error is -f'(x).
+          // derivative of coeffs[0] + coeffs[1] * x -> coeffs[1]
+          double epsi = -atan(coeffs[1]);
+
+          Eigen::VectorXd state(6);
+          state << 0,0,0, v, cte, epsi;
+
           /*
           * TODO: Calculate steering angle and throttle using MPC.
           *
@@ -101,13 +122,20 @@ int main() {
           double steer_value;
           double throttle_value;
 
+          auto vars = mpc.Solve(state, coeffs);
+
+          std::cout << "After solve" << std::endl;
+
+          steer_value = -1 * vars[6] / deg2rad(25);
+          throttle_value = vars[7];
+
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
           msgJson["steering_angle"] = steer_value;
           msgJson["throttle"] = throttle_value;
 
-          //Display the MPC predicted trajectory 
+          //Display the MPC predicted trajectory
           vector<double> mpc_x_vals;
           vector<double> mpc_y_vals;
 
@@ -139,8 +167,10 @@ int main() {
           //
           // NOTE: REMEMBER TO SET THIS TO 100 MILLISECONDS BEFORE
           // SUBMITTING.
-          this_thread::sleep_for(chrono::milliseconds(100));
+          this_thread::sleep_for(chrono::milliseconds(0));
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
+
+          std::cout << "end" << std::endl;
         }
       } else {
         // Manual driving
