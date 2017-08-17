@@ -143,8 +143,6 @@ int main() {
                     steer_value = -1 * vars[6] / deg2rad(25);
                     throttle_value = vars[7];
 
-                    std::cout << "After solve" << std::endl;
-
                     json msgJson;
                     // NOTE: Remember to divide by deg2rad(25) before you send
                     // the steering value back.
@@ -190,8 +188,6 @@ int main() {
                     // SUBMITTING.
                     this_thread::sleep_for(chrono::milliseconds(100));
                     ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-
-                    std::cout << "end" << std::endl;
                 }
             } else {
                 // Manual driving
