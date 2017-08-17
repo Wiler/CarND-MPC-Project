@@ -123,7 +123,7 @@ int main() {
                     double future_psi = v * -delay / 2.67 * delta;
                     double future_v = v + a * delay;
                     double future_cte = cte + v * sin(epsi) * delay;
-                    double future_epsi = epsi + v * delta / 2.67 * delay;
+                    double future_epsi = epsi + v * -delta / 2.67 * delay;
 
                     Eigen::VectorXd state(6);
                     state << future_px, future_py, future_psi, future_v,

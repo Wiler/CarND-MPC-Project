@@ -26,6 +26,8 @@ The kinematic model used in this project was the same explained in class. Notice
 
 The final values for N and dt were 10 and 0.09. There values were found by trial and error method. I started with a value of N = 15 and dt = 0.05, changing both in parallel until I got the final values mentioned before. Also, the weight for each component of the cost was adjusted until the behavior of the car was decent.
 
+During the adjustment of these variables, it was notice that a high value of N and a small value of dt resulted in too many points to calculate, consuming more resources and limiting the algorithm to respond on time. Meanwhile, small values of N resulted in a too short-vision of the "future", making impossible for the car to predict the correct behavior. At the end, the value of dt was very similar to the latency of 0.1 s, demonstrating the relation between both.
+
 # Polynomial and waypoints
 
 As mentioned in the Model section, coordinates provided by the simulator were first transformed to card point of view, using trigonometry. Later, this new values are passed to the polynomial function to generate the coefficients.

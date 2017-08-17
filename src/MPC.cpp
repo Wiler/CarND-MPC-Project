@@ -38,7 +38,7 @@ const double Lf = 2.67;
 
 // Both the reference cross track and orientation errors are 0.
 // The reference velocity is set to 40 mph.
-double ref_v = 30;
+double ref_v = 50;
 
 class FG_eval {
    public:
@@ -117,8 +117,13 @@ class FG_eval {
             AD<double> delta0 = vars[delta_start + t - 1];
             AD<double> a0 = vars[a_start + t - 1];
 
-            AD<double> f0 = coeffs[0] + coeffs[1] * x0;
-            AD<double> psides0 = CppAD::atan(coeffs[1]);
+            // This new varibles correspond to the 3rd grade polynomial
+            AD<double> f0 = coeffs[3] * pow(x0, 3) + coeffs[2] * pow(x0, 2) +
+                            coeffs[1] * x0 + coeffs[0];
+
+            // Calculate psi
+            AD<double> psides0 = CppAD::atan(coeffs[3] * pow(x0, 2) +
+                                             coeffs[2] * x0 + coeffs[1]);
 
             // Here's `x` to get you started.
             // The idea here is to constraint this value to be 0.
