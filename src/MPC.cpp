@@ -38,7 +38,7 @@ const double Lf = 2.67;
 
 // Both the reference cross track and orientation errors are 0.
 // The reference velocity is set to 40 mph.
-double ref_v = 40;
+double ref_v = 30;
 
 class FG_eval {
    public:
@@ -261,6 +261,15 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 
     // Cost
     auto cost = solution.obj_value;
+
+    // reset solution points for this iteration
+    this->mpc_solution_x_points = {};
+    this->mpc_solution_y_points = {};
+
+    for (int iter = 0; iter < N; iter++) {
+        this->mpc_solution_x_points.push_back(solution.x[x_start + iter]);
+        this->mpc_solution_y_points.push_back(solution.x[y_start + iter]);
+    }
 
     // TODO: Return the first actuator values. The variables can be accessed
     // with

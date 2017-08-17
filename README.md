@@ -7,7 +7,20 @@ Self-Driving Car Engineer Nanodegree Program
 
 # Model
 
-The kinematic model used in this project was the same explained in class. Notice that the coordinates were transformed to the car reference, as you will see in the main.cpp file.
+The kinematic model used in this project was the same explained in class. Notice that the coordinates were transformed to the car reference, as you will see in the main.cpp file. The following variables are included in the model:
+
+ - (x,y) coordinates of the car
+ - (psi) heading of the car
+ -  (v) velocity of the car
+ - (cte) cross track error
+ - (delta) steering angle of the car (actuator)
+ - (a) throttle of the car (actuator)
+
+ The update equations of this model are the following:
+
+ ![kmodel](./images/kmodel.png)
+ ![cte](./images/cte.png)
+ ![epsi](./images/epsi.png)
 
 # Choosing N and dt
 
@@ -23,6 +36,7 @@ Just before using the solve function of the MPC class, an additional calculation
 
 ## Dependencies
 
+* Python = 2.7 (Cmake file will look for python 2.7 symbols)
 * cmake >= 3.5
  * All OSes: [click here for installation instructions](https://cmake.org/install/)
 * make >= 4.1

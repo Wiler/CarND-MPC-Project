@@ -159,6 +159,9 @@ int main() {
                     // to the vehicle's coordinate system
                     // the points in the simulator are connected by a Green line
 
+                    mpc_x_vals = mpc.mpc_solution_x_points;
+                    mpc_y_vals = mpc.mpc_solution_y_points;
+
                     msgJson["mpc_x"] = mpc_x_vals;
                     msgJson["mpc_y"] = mpc_y_vals;
 
@@ -170,6 +173,11 @@ int main() {
                     // to the vehicle's coordinate system
                     // the points in the simulator are connected by a Yellow
                     // line
+
+                    for (int i = 0; i < ptsx.size(); i++) {
+                        next_x_vals.push_back(car_x[i]);
+                        next_y_vals.push_back(car_y[i]);
+                    }
 
                     msgJson["next_x"] = next_x_vals;
                     msgJson["next_y"] = next_y_vals;
